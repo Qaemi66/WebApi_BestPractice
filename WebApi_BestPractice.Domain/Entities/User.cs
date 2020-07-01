@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -11,14 +13,9 @@ namespace WebApi_BestPractice.Domain.Etities
         {
             this.IsActive = true;
         }
-        [Required]
-        [StringLength(100)]
+
         public string UserName { get; set; }
-        [Required]
-        [StringLength(500)]
         public string PasswordHash { get; set; }
-        [Required]
-        [StringLength(100)]
         public string FullName { get; set; }
         public int Age { get; set; }
         public Enums.GenderType Gender { get; set; }
@@ -28,5 +25,13 @@ namespace WebApi_BestPractice.Domain.Etities
         public ICollection<Post> Posts { get; set; }
     }
 
-    
+    public class UserConfiguration : IEntityTypeConfiguration<User>
+    {
+        public void Configure(EntityTypeBuilder<User> builder)
+        {
+            builder.Property(p => p.UserName).IsRequired().HasMaxLength(100);
+            builder.Property(p => p.PasswordHash).IsRequired().HasMaxLength(500);
+            builder.Property(p => p.FullName).IsRequired().HasMaxLength(100);
+        }
+    }
 }

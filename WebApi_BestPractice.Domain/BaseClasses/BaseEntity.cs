@@ -9,7 +9,7 @@ namespace WebApi_BestPractice.Domain.BaseClasses
     {
         public TKey Id { get; set; }
     }
-    public class BaseEntity : BaseEntity<int>
+    public abstract class BaseEntity : BaseEntity<int>
     {
     }
 }
