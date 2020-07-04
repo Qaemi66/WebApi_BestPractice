@@ -1,9 +1,9 @@
-﻿using Common;
-using Common.Utilities;
+﻿using Common.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using WebApi_BestPractice.Common.Enums;
 
 namespace WebFramework.Api
 {
@@ -117,10 +117,5 @@ namespace WebFramework.Api
         #endregion
     }
 
-    public enum ApiResultStatusCode
-    {
-        Success = 0,
-        NotFound = 1,
-        BadRequest = 2
-    }
+    
 }

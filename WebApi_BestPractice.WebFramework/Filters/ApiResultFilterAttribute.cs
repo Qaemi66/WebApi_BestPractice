@@ -1,8 +1,8 @@
-﻿using Common;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
 using System.Linq;
+using WebApi_BestPractice.Common.Enums;
 using WebFramework.Api;
 
 namespace WebFramework.Filters

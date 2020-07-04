@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_BestPractice.Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_BestPractice.WebFramework", "WebApi_BestPractice.WebFramework\WebApi_BestPractice.WebFramework.csproj", "{28B12BD9-35BF-4BF2-B72C-FE5919AE39AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi_BestPractice.WebApi", "WebApi_BestPractice.WebApi\WebApi_BestPractice.WebApi.csproj", "{75D0598D-4B22-4806-B15E-9E143603DB13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_BestPractice.WebApi", "WebApi_BestPractice.WebApi\WebApi_BestPractice.WebApi.csproj", "{75D0598D-4B22-4806-B15E-9E143603DB13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

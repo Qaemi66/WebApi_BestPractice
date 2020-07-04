@@ -1,8 +1,5 @@
 ﻿using Common.Utilities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WebApi_BestPractice.Domain.BaseClasses;
 
 namespace WebApi_BestPractice.Data

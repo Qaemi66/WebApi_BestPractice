@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApi_BestPractice.Domain.Enums;
 
 namespace WebApi_BestPractice.WebApi.Models

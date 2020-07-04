@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WebApi_BestPractice.Domain.BaseClasses
+﻿namespace WebApi_BestPractice.Domain.BaseClasses
 {
 
     public abstract class BaseEntity<TKey> : IEntity

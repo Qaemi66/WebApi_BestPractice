@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi_BestPractice.Data.Contracts;
@@ -49,19 +49,16 @@ namespace WebApi_BestPractice.WebApi.Controllers
         [ApiResultFilter]
         public async Task<ActionResult<User>> Create(UserDto userDto, CancellationToken cancellationToken)
         {
-            if (userRepository.TableNoTracking.Any(p => p.UserName == userDto.UserName))
-                return BadRequest("چنين كاربري پيش تر ثبت نام گرديده.");
-
             var user = new User()
             {
                 UserName = userDto.UserName,
                 FullName = userDto.FullName,
                 Gender = userDto.Gender,
-                PasswordHash = Common.Utilities.SecurityHelper.GetSha256Hash(userDto.Password),
+                PasswordHash = SecurityHelper.GetSha256Hash(userDto.Password),
                 Age = userDto.Age
             };
 
-            await userRepository.AddAsync(user, cancellationToken);
+            await userRepository.AddAsync(user, userDto.Password, cancellationToken);
             return Ok(user);
         }
 
