@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi_BestPractice.Data.Contracts;
 using WebApi_BestPractice.Domain.Etities;
+using WebApi_BestPractice.WebApi.Models;
 using WebFramework.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -46,8 +47,20 @@ namespace WebApi_BestPractice.WebApi.Controllers
 
         [HttpPost]
         [ApiResultFilter]
-        public async Task<ActionResult<User>> Create(User user, CancellationToken cancellationToken)
+        public async Task<ActionResult<User>> Create(UserDto userDto, CancellationToken cancellationToken)
         {
+            if (userRepository.TableNoTracking.Any(p => p.UserName == userDto.UserName))
+                return BadRequest("چنين كاربري پيش تر ثبت نام گرديده.");
+
+            var user = new User()
+            {
+                UserName = userDto.UserName,
+                FullName = userDto.FullName,
+                Gender = userDto.Gender,
+                PasswordHash = Common.Utilities.SecurityHelper.GetSha256Hash(userDto.Password),
+                Age = userDto.Age
+            };
+
             await userRepository.AddAsync(user, cancellationToken);
             return Ok(user);
         }
