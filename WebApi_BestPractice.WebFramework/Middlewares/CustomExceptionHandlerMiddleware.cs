@@ -21,7 +21,7 @@ namespace WebFramework.Middlewares
             builder.UseMiddleware<CustomExceptionHandlerMiddleware>();
         }
     }
-
+    
     public class CustomExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;

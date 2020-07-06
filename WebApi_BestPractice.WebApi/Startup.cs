@@ -7,7 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using WebApi_BestPractice.Data;
 using WebApi_BestPractice.Data.Contracts;
 using WebApi_BestPractice.Data.Repositories;
-using WebApi_BestPractice.WebFramework.Middlewares;
+using WebFramework.Middlewares;
+using FluentValidation.AspNetCore;
+using WebApi_BestPractice.WebFramework.Extensions;
 
 namespace WebApi_BestPractice.WebApi
 {
@@ -29,11 +31,16 @@ namespace WebApi_BestPractice.WebApi
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.
+                AddMvc().
+                AddCustomFluentValidation().
+                SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
+             
         }
+        
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -53,4 +60,5 @@ namespace WebApi_BestPractice.WebApi
             app.UseMvc();
         }
     }
+
 }
