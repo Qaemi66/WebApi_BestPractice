@@ -1,8 +1,8 @@
-﻿using Common.Exceptions;
-using Common.Utilities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using WebApi_BestPractice.Common.Exceptions;
+using WebApi_BestPractice.Common.Utilities;
 using WebApi_BestPractice.Data.Contracts;
 using WebApi_BestPractice.Domain.Etities;
 

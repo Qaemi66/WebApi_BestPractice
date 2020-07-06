@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Utilities
+namespace WebApi_BestPractice.Common.Utilities
 {
     public static class StringExtensions
     {

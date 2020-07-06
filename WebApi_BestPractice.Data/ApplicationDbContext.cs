@@ -1,5 +1,5 @@
-﻿using Common.Utilities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApi_BestPractice.Common.Utilities;
 using WebApi_BestPractice.Domain.BaseClasses;
 
 namespace WebApi_BestPractice.Data

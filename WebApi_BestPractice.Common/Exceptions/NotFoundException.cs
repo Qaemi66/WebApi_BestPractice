@@ -1,7 +1,7 @@
 ﻿using System;
 using WebApi_BestPractice.Common.Enums;
 
-namespace Common.Exceptions
+namespace WebApi_BestPractice.Common.Exceptions
 {
     public class NotFoundException : AppException
     {

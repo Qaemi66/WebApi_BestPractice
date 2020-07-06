@@ -1,26 +1,26 @@
 ﻿using System;
 using WebApi_BestPractice.Common.Enums;
 
-namespace Common.Exceptions
+namespace WebApi_BestPractice.Common.Exceptions
 {
     public class LogicException : AppException
     {
-        public LogicException() 
+        public LogicException()
             : base(ApiResultStatusCode.LogicError)
         {
         }
 
-        public LogicException(string message) 
+        public LogicException(string message)
             : base(ApiResultStatusCode.LogicError, message)
         {
         }
 
-        public LogicException(object additionalData) 
+        public LogicException(object additionalData)
             : base(ApiResultStatusCode.LogicError, additionalData)
         {
         }
 
-        public LogicException(string message, object additionalData) 
+        public LogicException(string message, object additionalData)
             : base(ApiResultStatusCode.LogicError, message, additionalData)
         {
         }

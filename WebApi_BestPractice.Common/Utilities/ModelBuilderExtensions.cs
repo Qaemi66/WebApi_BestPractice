@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Common.Utilities
+namespace WebApi_BestPractice.Common.Utilities
 {
     public static class ModelBuilderExtensions
     {

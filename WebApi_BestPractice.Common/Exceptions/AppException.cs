@@ -2,7 +2,7 @@
 using System.Net;
 using WebApi_BestPractice.Common.Enums;
 
-namespace Common.Exceptions
+namespace WebApi_BestPractice.Common.Exceptions
 {
     public class AppException : Exception
     {

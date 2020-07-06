@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using WebApi_BestPractice.Common.Utilities;
 
-namespace Common.Utilities
+namespace WebApi_BestPractice.Common.Utilities
 {
     public static class EnumExtensions
     {
@@ -42,7 +43,7 @@ namespace Common.Utilities
 
         public static Dictionary<int, string> ToDictionary(this Enum value)
         {
-            return Enum.GetValues(value.GetType()).Cast<Enum>().ToDictionary(p => Convert.ToInt32(p), q => ToDisplay(q));
+            return Enum.GetValues(value.GetType()).Cast<Enum>().ToDictionary(p => Convert.ToInt32(p), q => q.ToDisplay());
         }
     }
 

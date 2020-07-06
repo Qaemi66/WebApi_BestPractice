@@ -6,6 +6,7 @@ namespace WebApi_BestPractice.Domain.Enums
     {
         [Display(Name = "مرد")]
         Male = 1,
+
         [Display(Name = "زن")]
         Female = 2
     }

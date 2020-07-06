@@ -5,14 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net;
-using Common.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using WebFramework.Api;
 using WebApi_BestPractice.Common.Enums;
+using WebApi_BestPractice.Common.Exceptions;
+using Microsoft.AspNetCore.Builder;
 
 namespace WebFramework.Middlewares
 {
+    public static class CustomExceptionHandlerMiddlewareExtension
+    {
+        public static void UseCustomExceptionHandler(this IApplicationBuilder builder)
+        {
+            builder.UseMiddleware<CustomExceptionHandlerMiddleware>();
+        }
+    }
 
     public class CustomExceptionHandlerMiddleware
     {

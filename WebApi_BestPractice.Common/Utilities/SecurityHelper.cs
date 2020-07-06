@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Common.Utilities
+namespace WebApi_BestPractice.Common.Utilities
 {
     public static class SecurityHelper
     {
