@@ -10,6 +10,8 @@ using WebApi_BestPractice.Data.Repositories;
 using WebFramework.Middlewares;
 using FluentValidation.AspNetCore;
 using WebApi_BestPractice.WebFramework.Extensions;
+using WebApi_BestPractice.WebApi.Controllers;
+using WebFramework.Filters;
 
 namespace WebApi_BestPractice.WebApi
 {
@@ -38,7 +40,8 @@ namespace WebApi_BestPractice.WebApi
                 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
-             
+
+            services.AddScoped<ApiResultFilterAttribute>();
         }
         
 

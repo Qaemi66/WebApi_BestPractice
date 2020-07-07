@@ -25,7 +25,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
         }
 
         [HttpGet]
-        [ApiResultFilter]
+        [ServiceFilter(typeof(ApiResultFilterAttribute))]
         public async Task<ActionResult<List<User>>> Get(CancellationToken cancellationToken)
         {
             var users = await userRepository.TableNoTracking.ToListAsync(cancellationToken);
@@ -33,7 +33,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [ApiResultFilter]
+        [ServiceFilter(typeof(ApiResultFilterAttribute))]
         public async Task<ActionResult<User>> Get(int id, CancellationToken cancellationToken)
         {
             var user = await userRepository.GetByIdAsync(cancellationToken, id);
@@ -45,7 +45,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
         }
 
         [HttpPost]
-        [ApiResultFilter]
+        [ServiceFilter(typeof(ApiResultFilterAttribute))]
         public async Task<ActionResult<User>> Create(UserDto userDto, CancellationToken cancellationToken)
         {
             var user = new User()
@@ -62,7 +62,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
         }
 
         [HttpPut]
-        [ApiResultFilter]
+        [ServiceFilter(typeof(ApiResultFilterAttribute))]
         public async Task<ActionResult> Update(int id, User user, CancellationToken cancellationToken)
         {
             var updateUser = await userRepository.GetByIdAsync(cancellationToken, id);
@@ -81,7 +81,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        [ApiResultFilter]
+        [ServiceFilter(typeof(ApiResultFilterAttribute))]
         public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var deleteUser = await userRepository.GetByIdAsync(cancellationToken, id);
