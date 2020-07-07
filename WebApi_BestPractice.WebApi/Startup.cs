@@ -32,14 +32,12 @@ namespace WebApi_BestPractice.WebApi
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
             });
 
-
             services.
                 AddMvc().
                 AddCustomFluentValidation().
                 SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
                 
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddRepositories();
 
             services.AddScoped<ApiResultFilterAttribute>();
         }
