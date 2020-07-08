@@ -12,6 +12,9 @@ using FluentValidation.AspNetCore;
 using WebApi_BestPractice.WebFramework.Extensions;
 using WebApi_BestPractice.WebApi.Controllers;
 using WebFramework.Filters;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using WebApi_BestPractice.Common;
+using WebApi_BestPractice.Service.Services;
 
 namespace WebApi_BestPractice.WebApi
 {
@@ -19,9 +22,12 @@ namespace WebApi_BestPractice.WebApi
     {
         //TODO:change default route in webapi
 
+        private readonly SiteSettings _siteSettings;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _siteSettings = configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
         }
 
         public IConfiguration Configuration { get; }
@@ -29,19 +35,24 @@ namespace WebApi_BestPractice.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
             });
 
             services.
-                AddMvc().
+                AddMvc(options=> {
+                    options.Filters.Add(new AuthorizeFilter());
+                }).
                 AddCustomFluentValidation().
                 SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
                 
             services.AddRepositories();
 
             services.AddScoped<ApiResultFilterAttribute>();
+            services.AddJwtAuthentication(_siteSettings.jwtSettings);
         }
         
 

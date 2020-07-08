@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using WebApi_BestPractice.Common.Exceptions;
@@ -16,6 +17,9 @@ namespace WebApi_BestPractice.Data.Repositories
 
         public async Task<User> GetUserByUserPassAsync(string userName, string password, CancellationToken cancellationToken)
         {
+            if (!userName.HasValue() || !password.HasValue() )
+                throw new BadRequestException("نام كاربري يا كلمه عبور وارد نشده");
+
             var passwordHash = SecurityHelper.GetSha256Hash(password);
             return await TableNoTracking.SingleOrDefaultAsync(p => p.UserName == userName && p.PasswordHash == passwordHash, cancellationToken);
         }
@@ -36,5 +40,12 @@ namespace WebApi_BestPractice.Data.Repositories
             var user = await TableNoTracking.SingleOrDefaultAsync(p => p.UserName == userName);
             return user;
         }
+
+        public Task UpdateLastLoginDateAsync(User user, CancellationToken cancellationToken)
+        {
+            user.LastLoginDate = DateTimeOffset.Now;
+            return UpdateAsync(user, cancellationToken);
+        }
+
     }
 }

@@ -30,7 +30,7 @@ namespace WebApi_BestPractice.Domain.Etities
         public ICollection<Post> Posts { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }
-
+        public Guid SecurityStamp { get; set; }
     }
 
     public class UserConfiguration : IEntityTypeConfiguration<User>

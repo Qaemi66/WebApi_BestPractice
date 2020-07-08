@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi_BestPractice.Common.Exceptions;
@@ -19,6 +20,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository userRepository;
@@ -33,6 +35,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
         }
 
         [HttpGet("[action]")]
+        [AllowAnonymous]
         public async Task<string> GetToken(string userName, string password, CancellationToken cancellationToken)
         {
             var user = await userRepository.GetUserByUserPassAsync(userName, password, cancellationToken);

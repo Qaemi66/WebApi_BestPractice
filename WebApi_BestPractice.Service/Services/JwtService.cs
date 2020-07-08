@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WebApi_BestPractice.Common;
 using WebApi_BestPractice.Data.Contracts;
 using WebApi_BestPractice.Data.Repositories;
 using WebApi_BestPractice.Domain.Etities;
@@ -16,10 +17,12 @@ namespace WebApi_BestPractice.Service.Services
     public class JwtService : IJwtService
     {
         private readonly IUserRoleRepository UserRoleRepository;
+        private readonly SiteSettings siteSettings;
 
-        public JwtService(IUserRoleRepository claimRepository)
+        public JwtService(IUserRoleRepository claimRepository, SiteSettings siteSettings)
         {
             this.UserRoleRepository = claimRepository;
+            this.siteSettings = siteSettings;
         }
 
         public async Task<string> GenerateAsync(User user, CancellationToken cancellationToken)
@@ -28,23 +31,23 @@ namespace WebApi_BestPractice.Service.Services
 
             var claims = getClaimsAsync(user, cancellationToken);
 
-            var secretKey = Encoding.UTF8.GetBytes("lkaSJDL:IKJSAD23");
+            var secretKey = Encoding.UTF8.GetBytes(siteSettings.jwtSettings.SecretKey);
 
             var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Audience = "WebApi_BestPractice",
+                Audience = siteSettings.jwtSettings.Audience,
                 IssuedAt = DateTime.Now,
-                Expires = DateTime.Now.AddDays(1),
-                NotBefore = DateTime.Now,
-                Issuer = "WebApi_BestPractice",
+                Expires = DateTime.Now.AddMinutes(siteSettings.jwtSettings.ExpireMinutes),
+                NotBefore = DateTime.Now.AddMinutes(siteSettings.jwtSettings.NotBeforeMinutes),
+                Issuer = siteSettings.jwtSettings.Issuer,
                 SigningCredentials = signingCredentials,
                 Subject = new System.Security.Claims.ClaimsIdentity(await claims)
             };
 
 
-            var securityToken =  tokenHandler.CreateToken(tokenDescriptor);
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
             var jwt = tokenHandler.WriteToken(securityToken);
 
