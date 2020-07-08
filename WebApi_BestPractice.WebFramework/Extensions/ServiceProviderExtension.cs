@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using WebApi_BestPractice.Data.Contracts;
 using WebApi_BestPractice.Data.Repositories;
+using WebApi_BestPractice.Service.Services;
 using WebApi_BestPractice.WebApi.Models;
 
 namespace WebApi_BestPractice.WebFramework.Extensions
@@ -25,6 +26,8 @@ namespace WebApi_BestPractice.WebFramework.Extensions
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IClaimRepository, ClaimRepository>();
+            services.AddScoped<IJwtService, JwtService>();
         }
     }
 }

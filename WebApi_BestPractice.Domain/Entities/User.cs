@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using WebApi_BestPractice.Domain.Entities;
 
 namespace WebApi_BestPractice.Domain.Etities
 {
@@ -27,6 +28,9 @@ namespace WebApi_BestPractice.Domain.Etities
         public DateTimeOffset LastLoginDate { get; set; }
 
         public ICollection<Post> Posts { get; set; }
+
+        public ICollection<Claim> Claims { get; set; }
+
     }
 
     public class UserConfiguration : IEntityTypeConfiguration<User>

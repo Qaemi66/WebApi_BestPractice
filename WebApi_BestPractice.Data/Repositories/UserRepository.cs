@@ -30,5 +30,6 @@ namespace WebApi_BestPractice.Data.Repositories
             user.PasswordHash = passwordHash;
             await base.AddAsync(user, cancellationToken);
         }
+
     }
 }

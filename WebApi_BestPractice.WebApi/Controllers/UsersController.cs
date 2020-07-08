@@ -3,9 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApi_BestPractice.Common.Exceptions;
 using WebApi_BestPractice.Common.Utilities;
 using WebApi_BestPractice.Data.Contracts;
+using WebApi_BestPractice.Data.Repositories;
 using WebApi_BestPractice.Domain.Etities;
+using WebApi_BestPractice.Service.Services;
 using WebApi_BestPractice.WebApi.Models;
 using WebFramework.Filters;
 
@@ -18,10 +21,22 @@ namespace WebApi_BestPractice.WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository userRepository;
+        private readonly IJwtService jwtService;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, IJwtService jwtService)
         {
             this.userRepository = userRepository;
+            this.jwtService = jwtService;
+        }
+
+        [HttpGet("[action]")]
+        public async Task<string> GetToken(string userName , string password, CancellationToken cancellationToken) {
+            var user = await userRepository.GetUserByUserPassAsync(userName, password, cancellationToken);
+            if (user == null)
+                throw new BadRequestException("نام کاربری یا رمز عبور اشتباه است");
+
+            var jwtToken = await jwtService.GenerateAsync(user, cancellationToken);
+            return jwtToken;
         }
 
         [HttpGet]
@@ -37,16 +52,16 @@ namespace WebApi_BestPractice.WebApi.Controllers
         public async Task<ActionResult<User>> Get(int id, CancellationToken cancellationToken)
         {
             var user = await userRepository.GetByIdAsync(cancellationToken, id);
+            
             if (user == null)
-            {
                 return NotFound();
-            }
+            
             return Ok(user);
         }
 
         [HttpPost]
         [ServiceFilter(typeof(ApiResultFilterAttribute))]
-        public async Task<ActionResult<User>> Create(UserDto userDto, CancellationToken cancellationToken)
+        public async Task<ActionResult<User>> Post(UserDto userDto, CancellationToken cancellationToken)
         {
             var user = new User()
             {
@@ -63,7 +78,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
 
         [HttpPut]
         [ServiceFilter(typeof(ApiResultFilterAttribute))]
-        public async Task<ActionResult> Update(int id, User user, CancellationToken cancellationToken)
+        public async Task<ActionResult> Put(int id, User user, CancellationToken cancellationToken)
         {
             var updateUser = await userRepository.GetByIdAsync(cancellationToken, id);
 

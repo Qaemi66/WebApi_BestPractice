@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebApi_BestPractice.Domain.Entities;
 
 namespace WebApi_BestPractice.Domain.Etities
 {
@@ -9,6 +12,8 @@ namespace WebApi_BestPractice.Domain.Etities
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public ICollection<Claim> Claims { get; set; }
     }
 
     public class RoleConfiguration : IEntityTypeConfiguration<Role>
