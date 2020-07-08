@@ -13,7 +13,7 @@ namespace WebApi_BestPractice.Domain.Etities
 
         public string Description { get; set; }
 
-        public ICollection<Claim> Claims { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 
     public class RoleConfiguration : IEntityTypeConfiguration<Role>

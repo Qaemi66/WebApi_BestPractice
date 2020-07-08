@@ -15,11 +15,11 @@ namespace WebApi_BestPractice.Service.Services
 {
     public class JwtService : IJwtService
     {
-        private readonly IClaimRepository claimRepository;
+        private readonly IUserRoleRepository UserRoleRepository;
 
-        public JwtService(IClaimRepository claimRepository)
+        public JwtService(IUserRoleRepository claimRepository)
         {
-            this.claimRepository = claimRepository;
+            this.UserRoleRepository = claimRepository;
         }
 
         public async Task<string> GenerateAsync(User user, CancellationToken cancellationToken)
@@ -29,6 +29,7 @@ namespace WebApi_BestPractice.Service.Services
             var claims = getClaimsAsync(user, cancellationToken);
 
             var secretKey = Encoding.UTF8.GetBytes("lkaSJDL:IKJSAD23");
+
             var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor()
@@ -58,7 +59,7 @@ namespace WebApi_BestPractice.Service.Services
             list.Add(new Claim(ClaimTypes.Name, user.UserName));
             list.Add(new Claim(ClaimTypes.GivenName, user.FullName));
 
-            await claimRepository.GetUserClaimsAsync(user, cancellationToken);
+            await UserRoleRepository.GetRoleAsync(user, cancellationToken);
 
             return list;
         }

@@ -7,6 +7,7 @@ using WebApi_BestPractice.Common.Exceptions;
 using WebApi_BestPractice.Common.Utilities;
 using WebApi_BestPractice.Data.Contracts;
 using WebApi_BestPractice.Data.Repositories;
+using WebApi_BestPractice.Domain.Entities;
 using WebApi_BestPractice.Domain.Etities;
 using WebApi_BestPractice.Service.Services;
 using WebApi_BestPractice.WebApi.Models;
@@ -23,14 +24,17 @@ namespace WebApi_BestPractice.WebApi.Controllers
         private readonly IUserRepository userRepository;
         private readonly IJwtService jwtService;
 
-        public UsersController(IUserRepository userRepository, IJwtService jwtService)
+        public UsersController(
+            IUserRepository userRepository,
+            IJwtService jwtService)
         {
             this.userRepository = userRepository;
             this.jwtService = jwtService;
         }
 
         [HttpGet("[action]")]
-        public async Task<string> GetToken(string userName , string password, CancellationToken cancellationToken) {
+        public async Task<string> GetToken(string userName, string password, CancellationToken cancellationToken)
+        {
             var user = await userRepository.GetUserByUserPassAsync(userName, password, cancellationToken);
             if (user == null)
                 throw new BadRequestException("نام کاربری یا رمز عبور اشتباه است");
@@ -52,10 +56,10 @@ namespace WebApi_BestPractice.WebApi.Controllers
         public async Task<ActionResult<User>> Get(int id, CancellationToken cancellationToken)
         {
             var user = await userRepository.GetByIdAsync(cancellationToken, id);
-            
+
             if (user == null)
                 return NotFound();
-            
+
             return Ok(user);
         }
 
@@ -63,7 +67,12 @@ namespace WebApi_BestPractice.WebApi.Controllers
         [ServiceFilter(typeof(ApiResultFilterAttribute))]
         public async Task<ActionResult<User>> Post(UserDto userDto, CancellationToken cancellationToken)
         {
-            var user = new User()
+            var user = await userRepository.GetUserByUserNameAsync(userDto.UserName, cancellationToken);
+
+            if (user != null)
+                throw new BadRequestException("نام كاربري تكراريست");
+            
+            user = new User()
             {
                 UserName = userDto.UserName,
                 FullName = userDto.FullName,
@@ -72,24 +81,24 @@ namespace WebApi_BestPractice.WebApi.Controllers
                 Age = userDto.Age
             };
 
-            await userRepository.AddAsync(user, userDto.Password, cancellationToken);
+            //todo:افزودن ليست دسترسي هاي كاربر
+
+            await userRepository.AddAsync(user, cancellationToken);
+
             return Ok(user);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ServiceFilter(typeof(ApiResultFilterAttribute))]
-        public async Task<ActionResult> Put(int id, User user, CancellationToken cancellationToken)
+        public async Task<ActionResult> Put(int id, [FromBody] UserDto userDto, CancellationToken cancellationToken)
         {
             var updateUser = await userRepository.GetByIdAsync(cancellationToken, id);
 
-            updateUser.UserName = user.UserName;
-            updateUser.PasswordHash = user.PasswordHash;
-            updateUser.FullName = user.FullName;
-            updateUser.Age = user.Age;
-            updateUser.Gender = user.Gender;
-            updateUser.IsActive = user.IsActive;
-            updateUser.LastLoginDate = user.LastLoginDate;
-
+            updateUser.UserName = userDto.UserName;
+            updateUser.PasswordHash = SecurityHelper.GetSha256Hash(userDto.Password);
+            updateUser.FullName = userDto.FullName;
+            updateUser.Age = userDto.Age;
+            updateUser.Gender = userDto.Gender;
 
             await userRepository.UpdateAsync(updateUser, cancellationToken);
             return Ok();

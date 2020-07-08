@@ -29,7 +29,7 @@ namespace WebApi_BestPractice.Domain.Etities
 
         public ICollection<Post> Posts { get; set; }
 
-        public ICollection<Claim> Claims { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
 
     }
 

@@ -10,8 +10,8 @@ using WebApi_BestPractice.Data;
 namespace WebApi_BestPractice.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200708042427_AddClaims")]
-    partial class AddClaims
+    [Migration("20200708054142_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,17 +21,17 @@ namespace WebApi_BestPractice.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WebApi_BestPractice.Domain.Entities.Claim", b =>
+            modelBuilder.Entity("WebApi_BestPractice.Domain.Entities.UserRole", b =>
                 {
                     b.Property<int>("RoleId");
 
                     b.Property<int>("UserId");
 
-                    b.Property<int>("Id");
-
                     b.HasKey("RoleId", "UserId");
 
-                    b.ToTable("Claims");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("WebApi_BestPractice.Domain.Etities.Category", b =>
@@ -93,8 +93,6 @@ namespace WebApi_BestPractice.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<int>("UserId");
-
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
@@ -131,7 +129,7 @@ namespace WebApi_BestPractice.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("WebApi_BestPractice.Domain.Entities.Claim", b =>
+            modelBuilder.Entity("WebApi_BestPractice.Domain.Entities.UserRole", b =>
                 {
                     b.HasOne("WebApi_BestPractice.Domain.Etities.Role", "Role")
                         .WithMany("UserRoles")
@@ -140,7 +138,7 @@ namespace WebApi_BestPractice.Data.Migrations
 
                     b.HasOne("WebApi_BestPractice.Domain.Etities.User", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

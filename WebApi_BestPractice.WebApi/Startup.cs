@@ -17,6 +17,8 @@ namespace WebApi_BestPractice.WebApi
 {
     public class Startup
     {
+        //TODO:change default route in webapi
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;

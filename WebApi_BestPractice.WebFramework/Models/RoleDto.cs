@@ -16,11 +16,11 @@ namespace WebApi_BestPractice.WebApi.Models
         {
             RuleFor(x => x.Name).
                 NotNull().
-                Length(50);
+                MaximumLength(50);
 
             RuleFor(x => x.Description).
                 NotNull().
-                Length(100);
+                MaximumLength(100);
         }
 
     }

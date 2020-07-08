@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using WebApi_BestPractice.Domain.Enums;
 
@@ -18,6 +19,8 @@ namespace WebApi_BestPractice.WebApi.Models
         
         public GenderType Gender { get; set; }
 
+       // public ICollection<RoleDto> Roles { get; set; }
+
         /*جهت پياده سازي وليديشن ديفالت دات نت و افزودن يك وليديشن جديد
          public class UserDto :IValidatableObject
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -36,12 +39,14 @@ namespace WebApi_BestPractice.WebApi.Models
     {
         public UserDtoValidator()
         {
-            RuleFor(x => x.UserName).NotNull().Length(100);
+            RuleFor(x => x.UserName).
+                NotNull().
+                MaximumLength(100);
 
             RuleFor(x => x.FullName).
                 NotNull().
                 NotEqual("test").WithMessage("نام كاربري نمي تواند test باشد").
-                Length(100);
+                MaximumLength(100);
 
             RuleFor(x => x.Password).
                 NotNull().
@@ -53,11 +58,15 @@ namespace WebApi_BestPractice.WebApi.Models
                 WithMessage("كلمه عبور و تكرار آن يكسان نيست");
 
             RuleFor(x => x.Age).InclusiveBetween(18, 60);
+            
+           // RuleForEach(x => x.Roles).SetValidator(new RoleDtoValidator());
 
         }
 
         private bool hasValidPassword(string password)
         {
+            return true;
+            /*
             var lowercase = new Regex("[a-z]+");
             var uppercase = new Regex("[A-Z]+");
             var digit = new Regex("(\\d)+");
@@ -66,6 +75,7 @@ namespace WebApi_BestPractice.WebApi.Models
                 uppercase.IsMatch(password) &&
                 digit.IsMatch(password) &&
                 symbol.IsMatch(password);
+            */
         }
     }
 

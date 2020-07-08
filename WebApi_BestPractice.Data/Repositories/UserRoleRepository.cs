@@ -12,20 +12,20 @@ using WebApi_BestPractice.Domain.Etities;
 
 namespace WebApi_BestPractice.Data.Repositories
 {
-    public class ClaimRepository : Repository<Claim>, IClaimRepository
+    public class UserRoleRepository : Repository<UserRole>, IUserRoleRepository
     {
-        public ClaimRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public UserRoleRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<ICollection<Role>> GetUserClaimsAsync(User user, CancellationToken cancellationToken)
+        public async Task<ICollection<Role>> GetRoleAsync(User user, CancellationToken cancellationToken)
         {
             if (user == null)
                 return null;
 
-            var claims = await TableNoTracking.Where(p => p.Id == user.Id).Select(p => p.Role).ToListAsync();
+            var roles = await TableNoTracking.Where(p => p.UserId == user.Id).Select(p => p.Role).ToListAsync();
 
-            return claims;
+            return roles;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace WebApi_BestPractice.WebFramework.Extensions
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IClaimRepository, ClaimRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IJwtService, JwtService>();
         }
     }

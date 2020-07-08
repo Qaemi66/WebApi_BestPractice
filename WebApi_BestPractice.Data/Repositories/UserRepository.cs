@@ -28,8 +28,13 @@ namespace WebApi_BestPractice.Data.Repositories
 
             var passwordHash = SecurityHelper.GetSha256Hash(password);
             user.PasswordHash = passwordHash;
-            await base.AddAsync(user, cancellationToken);
+            await base.AddAsync(user, cancellationToken);           
         }
 
+        public async Task<User> GetUserByUserNameAsync(string userName, CancellationToken cancellationToken)
+        {
+            var user = await TableNoTracking.SingleOrDefaultAsync(p => p.UserName == userName);
+            return user;
+        }
     }
 }

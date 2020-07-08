@@ -57,7 +57,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
             {
                 Name = roleDto.Name,
                 Description = roleDto.Description,
-                Claims = null
+                UserRoles = null
             };
 
             await roleRepository.AddAsync(role, cancellationToken);
@@ -82,7 +82,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
         // DELETE api/<RolesController>/5
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ApiResultFilterAttribute))]
-        public async Task<ActionResult> Delete(int id, Role role, CancellationToken cancellationToken)
+        public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var deleteRole = await roleRepository.GetByIdAsync(cancellationToken, id);
             await roleRepository.DeleteAsync(deleteRole, cancellationToken);

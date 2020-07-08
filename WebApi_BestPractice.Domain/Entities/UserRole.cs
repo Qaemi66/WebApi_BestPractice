@@ -9,7 +9,7 @@ using WebApi_BestPractice.Domain.Etities;
 
 namespace WebApi_BestPractice.Domain.Entities
 {
-    public class Claim : BaseEntity<int>
+    public class UserRole : IEntity
     {
         public int UserId { get; set; }
 
@@ -21,14 +21,14 @@ namespace WebApi_BestPractice.Domain.Entities
 
     }
 
-    public class ClaimConfiguration : IEntityTypeConfiguration<Claim>
+    public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     {
-        public void Configure(EntityTypeBuilder<Claim> builder)
+        public void Configure(EntityTypeBuilder<UserRole> builder)
         {
             builder.HasKey(p=> new { p.RoleId, p.UserId});
 
-            builder.HasOne(p => p.Role).WithMany(p => p.Claims).HasForeignKey(p=>p.RoleId);
-            builder.HasOne(p => p.User).WithMany(p => p.Claims).HasForeignKey(p => p.UserId);
+            builder.HasOne(p => p.Role).WithMany(p => p.UserRoles).HasForeignKey(p=>p.RoleId);
+            builder.HasOne(p => p.User).WithMany(p => p.UserRoles).HasForeignKey(p => p.UserId);
         }
     }
 

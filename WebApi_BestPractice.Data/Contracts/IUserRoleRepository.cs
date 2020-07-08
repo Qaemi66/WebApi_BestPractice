@@ -5,8 +5,8 @@ using WebApi_BestPractice.Domain.Etities;
 
 namespace WebApi_BestPractice.Data.Repositories
 {
-    public interface IClaimRepository
+    public interface IUserRoleRepository
     {
-        Task<ICollection<Role>> GetUserClaimsAsync(User user, CancellationToken cancellationToken);
+        Task<ICollection<Role>> GetRoleAsync(User user, CancellationToken cancellationToken);
     }
 }
