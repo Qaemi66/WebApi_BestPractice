@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,17 +20,17 @@ namespace WebApi_BestPractice.Service.Services
         private readonly IUserRoleRepository UserRoleRepository;
         private readonly SiteSettings siteSettings;
 
-        public JwtService(IUserRoleRepository claimRepository, SiteSettings siteSettings)
+        public JwtService(IUserRoleRepository claimRepository, IOptionsSnapshot<SiteSettings> settings)
         {
             this.UserRoleRepository = claimRepository;
-            this.siteSettings = siteSettings;
+            this.siteSettings = settings.Value;
         }
 
         public async Task<string> GenerateAsync(User user, CancellationToken cancellationToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var claims = getClaimsAsync(user, cancellationToken);
+            var claims = GetClaimsAsync(user, cancellationToken);
 
             var secretKey = Encoding.UTF8.GetBytes(siteSettings.jwtSettings.SecretKey);
 
@@ -38,12 +39,12 @@ namespace WebApi_BestPractice.Service.Services
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Audience = siteSettings.jwtSettings.Audience,
+                Issuer = siteSettings.jwtSettings.Issuer,
                 IssuedAt = DateTime.Now,
                 Expires = DateTime.Now.AddMinutes(siteSettings.jwtSettings.ExpireMinutes),
                 NotBefore = DateTime.Now.AddMinutes(siteSettings.jwtSettings.NotBeforeMinutes),
-                Issuer = siteSettings.jwtSettings.Issuer,
                 SigningCredentials = signingCredentials,
-                Subject = new System.Security.Claims.ClaimsIdentity(await claims)
+                Subject = new ClaimsIdentity(await claims)
             };
 
 
@@ -54,15 +55,18 @@ namespace WebApi_BestPractice.Service.Services
             return jwt;
         }
 
-        private async Task<IEnumerable<Claim>> getClaimsAsync(User user, CancellationToken cancellationToken)
+        private async Task<IEnumerable<Claim>> GetClaimsAsync(User user, CancellationToken cancellationToken)
         {
-            var list = new List<Claim>();
+            var list = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.GivenName, user.FullName)
+            };
 
-            list.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-            list.Add(new Claim(ClaimTypes.Name, user.UserName));
-            list.Add(new Claim(ClaimTypes.GivenName, user.FullName));
-
-            await UserRoleRepository.GetRoleAsync(user, cancellationToken);
+            var roles = await UserRoleRepository.GetRoleAsync(user, cancellationToken);
+            foreach (var role in roles)
+                list.Add(new Claim(ClaimTypes.Role, role.Name));
 
             return list;
         }

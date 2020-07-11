@@ -54,7 +54,8 @@ namespace WebApi_BestPractice.Data.Migrations
                     Age = table.Column<int>(nullable: false),
                     Gender = table.Column<int>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
-                    LastLoginDate = table.Column<DateTimeOffset>(nullable: false)
+                    LastLoginDate = table.Column<DateTimeOffset>(nullable: false),
+                    SecurityStamp = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -111,6 +112,21 @@ namespace WebApi_BestPractice.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[] { 1, "مدیر سایت", "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Age", "FullName", "Gender", "IsActive", "LastLoginDate", "PasswordHash", "SecurityStamp", "UserName" },
+                values: new object[] { 1, 33, "ایمان قائمی", 1, true, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=", new Guid("00000000-0000-0000-0000-000000000000"), "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_ParentCategoryId",

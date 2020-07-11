@@ -10,7 +10,7 @@ using WebApi_BestPractice.Data;
 namespace WebApi_BestPractice.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200708054142_Init")]
+    [Migration("20200711015313_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,10 @@ namespace WebApi_BestPractice.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new { RoleId = 1, UserId = 1 }
+                    );
                 });
 
             modelBuilder.Entity("WebApi_BestPractice.Domain.Etities.Category", b =>
@@ -96,6 +100,10 @@ namespace WebApi_BestPractice.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new { Id = 1, Description = "مدیر سایت", Name = "Admin" }
+                    );
                 });
 
             modelBuilder.Entity("WebApi_BestPractice.Domain.Etities.User", b =>
@@ -120,6 +128,8 @@ namespace WebApi_BestPractice.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(500);
 
+                    b.Property<Guid>("SecurityStamp");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(100);
@@ -127,6 +137,10 @@ namespace WebApi_BestPractice.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new { Id = 1, Age = 33, FullName = "ایمان قائمی", Gender = 1, IsActive = true, LastLoginDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), PasswordHash = "WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=", SecurityStamp = new Guid("00000000-0000-0000-0000-000000000000"), UserName = "Admin" }
+                    );
                 });
 
             modelBuilder.Entity("WebApi_BestPractice.Domain.Entities.UserRole", b =>

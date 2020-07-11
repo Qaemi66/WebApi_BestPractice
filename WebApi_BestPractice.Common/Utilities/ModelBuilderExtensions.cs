@@ -36,7 +36,7 @@ namespace WebApi_BestPractice.Common.Utilities
                 string tableName = entityType.Relational().TableName;
                 entityType.Relational().TableName = pluralizer.Pluralize(tableName);
             }
-        }
+        }       
 
         /// <summary>
         /// Set NEWSEQUENTIALID() sql function for all columns named "Id"

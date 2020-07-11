@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi_BestPractice.Common.Exceptions;
 using WebApi_BestPractice.Common.Utilities;
+using WebApi_BestPractice.Data;
 using WebApi_BestPractice.Data.Contracts;
 using WebApi_BestPractice.Data.Repositories;
 using WebApi_BestPractice.Domain.Entities;

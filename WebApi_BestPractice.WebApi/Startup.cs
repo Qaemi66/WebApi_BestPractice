@@ -52,6 +52,7 @@ namespace WebApi_BestPractice.WebApi
             services.AddRepositories();
 
             services.AddScoped<ApiResultFilterAttribute>();
+            services.AddScoped<IJwtService, JwtService>();
             services.AddJwtAuthentication(_siteSettings.jwtSettings);
         }
         

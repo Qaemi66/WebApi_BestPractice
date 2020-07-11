@@ -11,6 +11,8 @@ namespace WebApi_BestPractice.Data.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
+        ApplicationDbContext IUserRepository.dbContext => DbContext;
+
         public UserRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
