@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -57,11 +58,14 @@ namespace WebApi_BestPractice.Service.Services
 
         private async Task<IEnumerable<Claim>> GetClaimsAsync(User user, CancellationToken cancellationToken)
         {
+            var securityStampClaimType = new ClaimsIdentityOptions().SecurityStampClaimType;
+
             var list = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.GivenName, user.FullName)
+                new Claim(ClaimTypes.GivenName, user.FullName),
+                new Claim(securityStampClaimType, user.SecurityStamp.ToString())
             };
 
             var roles = await UserRoleRepository.GetRoleAsync(user, cancellationToken);

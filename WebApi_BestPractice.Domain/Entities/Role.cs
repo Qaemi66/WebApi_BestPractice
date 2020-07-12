@@ -8,11 +8,9 @@ using WebApi_BestPractice.Domain.Entities;
 namespace WebApi_BestPractice.Domain.Etities
 {
     public class Role : BaseClasses.BaseEntity {
-
         public string Name { get; set; }
-
         public string Description { get; set; }
-
+        
         public ICollection<UserRole> UserRoles { get; set; }
     }
 

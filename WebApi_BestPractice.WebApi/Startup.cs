@@ -72,6 +72,9 @@ namespace WebApi_BestPractice.WebApi
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
+
             app.UseMvc();
         }
     }

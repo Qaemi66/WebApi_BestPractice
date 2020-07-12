@@ -11,26 +11,20 @@ namespace WebApi_BestPractice.Domain.Etities
         public User()
         {
             this.IsActive = true;
+            this.SecurityStamp = Guid.NewGuid();
         }
 
         public string UserName { get; set; }
-
         public string PasswordHash { get; set; }
-
         public string FullName { get; set; }
-
         public int Age { get; set; }
-
         public Enums.GenderType Gender { get; set; }
-
         public bool IsActive { get; set; }
-
         public DateTimeOffset LastLoginDate { get; set; }
+        public Guid SecurityStamp { get; set; }
 
         public ICollection<Post> Posts { get; set; }
-
         public ICollection<UserRole> UserRoles { get; set; }
-        public Guid SecurityStamp { get; set; }
     }
 
     public class UserConfiguration : IEntityTypeConfiguration<User>

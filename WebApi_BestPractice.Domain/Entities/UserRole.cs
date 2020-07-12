@@ -12,13 +12,10 @@ namespace WebApi_BestPractice.Domain.Entities
     public class UserRole : IEntity
     {
         public int UserId { get; set; }
-
         public int RoleId { get; set; }
-
+        
         public User User { get; set; }
-
         public Role Role { get; set; }
-
     }
 
     public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
