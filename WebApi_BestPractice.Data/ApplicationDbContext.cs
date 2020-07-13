@@ -1,15 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Net.NetworkInformation;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WebApi_BestPractice.Common.Utilities;
 using WebApi_BestPractice.Data.Extensions;
 using WebApi_BestPractice.Domain.BaseClasses;
 using WebApi_BestPractice.Domain.Entities;
-using WebApi_BestPractice.Domain.Etities;
 
 namespace WebApi_BestPractice.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     {
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
@@ -25,7 +23,6 @@ namespace WebApi_BestPractice.Data
             modelBuilder.AddPluralizingTableNameConvention();
 
             modelBuilder.Seed();
-
         }
 
     }

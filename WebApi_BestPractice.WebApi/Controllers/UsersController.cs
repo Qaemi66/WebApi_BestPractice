@@ -2,15 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi_BestPractice.Common.Exceptions;
 using WebApi_BestPractice.Common.Utilities;
-using WebApi_BestPractice.Data;
 using WebApi_BestPractice.Data.Contracts;
-using WebApi_BestPractice.Data.Repositories;
 using WebApi_BestPractice.Domain.Entities;
-using WebApi_BestPractice.Domain.Etities;
 using WebApi_BestPractice.Service.Services;
 using WebApi_BestPractice.WebApi.Models;
 using WebFramework.Filters;
@@ -26,13 +24,22 @@ namespace WebApi_BestPractice.WebApi.Controllers
     {
         private readonly IUserRepository userRepository;
         private readonly IJwtService jwtService;
+        private readonly UserManager<User> userManager;
+        private readonly RoleManager<Role> roleManager;
+        private readonly SignInManager<User> signInManager;
 
         public UsersController(
             IUserRepository userRepository,
-            IJwtService jwtService)
+            IJwtService jwtService, 
+            UserManager<User> userManager, 
+            RoleManager<Role> roleManager, 
+            SignInManager<User> signInManager)
         {
             this.userRepository = userRepository;
             this.jwtService = jwtService;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
+            this.signInManager = signInManager;
         }
 
         [HttpGet("[action]")]
@@ -71,7 +78,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
         [ServiceFilter(typeof(ApiResultFilterAttribute))]
         public async Task<ActionResult<User>> Post(UserDto userDto, CancellationToken cancellationToken)
         {
-            var user = await userRepository.GetUserByUserNameAsync(userDto.UserName, cancellationToken);
+            var user = await userManager.FindByNameAsync(userDto.UserName);
 
             if (user != null)
                 throw new BadRequestException("نام كاربري تكراريست");

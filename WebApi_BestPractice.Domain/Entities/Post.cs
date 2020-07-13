@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
-namespace WebApi_BestPractice.Domain.Etities
+namespace WebApi_BestPractice.Domain.Entities
 {
     public class Post : BaseClasses.BaseEntity<Guid>
     {

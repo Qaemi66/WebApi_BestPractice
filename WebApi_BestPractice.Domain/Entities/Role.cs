@@ -1,17 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using WebApi_BestPractice.Domain.Entities;
+using WebApi_BestPractice.Domain.BaseClasses;
 
-namespace WebApi_BestPractice.Domain.Etities
+namespace WebApi_BestPractice.Domain.Entities
 {
-    public class Role : BaseClasses.BaseEntity {
-        public string Name { get; set; }
+    public class Role : IdentityRole<int>, IEntity
+    {
         public string Description { get; set; }
-        
-        public ICollection<UserRole> UserRoles { get; set; }
     }
 
     public class RoleConfiguration : IEntityTypeConfiguration<Role>

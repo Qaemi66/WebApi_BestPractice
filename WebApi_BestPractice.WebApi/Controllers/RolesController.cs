@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
 using WebApi_BestPractice.Data.Contracts;
-using WebApi_BestPractice.Domain.Etities;
+using WebApi_BestPractice.Domain.Entities;
 using WebApi_BestPractice.WebApi.Models;
 using WebFramework.Filters;
 
@@ -56,8 +53,7 @@ namespace WebApi_BestPractice.WebApi.Controllers
             var role = new Role
             {
                 Name = roleDto.Name,
-                Description = roleDto.Description,
-                UserRoles = null
+                Description = roleDto.Description
             };
 
             await roleRepository.AddAsync(role, cancellationToken);

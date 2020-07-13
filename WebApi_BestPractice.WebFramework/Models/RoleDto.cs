@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using System.Text.RegularExpressions;
-using WebApi_BestPractice.Domain.Enums;
 
 namespace WebApi_BestPractice.WebApi.Models
 {

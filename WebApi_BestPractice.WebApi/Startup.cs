@@ -5,16 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebApi_BestPractice.Data;
-using WebApi_BestPractice.Data.Contracts;
-using WebApi_BestPractice.Data.Repositories;
 using WebFramework.Middlewares;
-using FluentValidation.AspNetCore;
 using WebApi_BestPractice.WebFramework.Extensions;
-using WebApi_BestPractice.WebApi.Controllers;
 using WebFramework.Filters;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using WebApi_BestPractice.Common;
 using WebApi_BestPractice.Service.Services;
+using WebFramework.Configuration;
 
 namespace WebApi_BestPractice.WebApi
 {
@@ -41,6 +38,8 @@ namespace WebApi_BestPractice.WebApi
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
             });
+
+            services.AddCustomIdentity(_siteSettings.IdentitySettings);
 
             services.
                 AddMvc(options=> {

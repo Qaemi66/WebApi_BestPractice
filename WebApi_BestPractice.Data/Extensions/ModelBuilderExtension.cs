@@ -1,12 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebApi_BestPractice.Common.Utilities;
 using WebApi_BestPractice.Domain.Entities;
-using WebApi_BestPractice.Domain.Etities;
 
 namespace WebApi_BestPractice.Data.Extensions
 {
@@ -31,7 +26,7 @@ namespace WebApi_BestPractice.Data.Extensions
                 Description = "مدیر سایت"
             };
 
-            var userRole = new UserRole()
+            var userRole = new IdentityUserRole<int>()
             {
                 RoleId = user.Id,
                 UserId = role.Id
@@ -39,7 +34,7 @@ namespace WebApi_BestPractice.Data.Extensions
 
             modelBuilder.Entity<User>().HasData(user);
             modelBuilder.Entity<Role>().HasData(role);
-            modelBuilder.Entity<UserRole>().HasData(userRole);
+            modelBuilder.Entity<IdentityUserRole<int>>().HasData(userRole);
         }
     }
 }
