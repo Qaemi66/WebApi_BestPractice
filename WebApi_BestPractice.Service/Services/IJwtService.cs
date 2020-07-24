@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using WebApi_BestPractice.Domain.Etities;
+using WebApi_BestPractice.Domain.Entities;
 
 namespace WebApi_BestPractice.Service.Services
 {

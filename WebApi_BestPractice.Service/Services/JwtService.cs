@@ -4,34 +4,32 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WebApi_BestPractice.Common;
-using WebApi_BestPractice.Data.Contracts;
 using WebApi_BestPractice.Data.Repositories;
-using WebApi_BestPractice.Domain.Etities;
+using WebApi_BestPractice.Domain.Entities;
 
 namespace WebApi_BestPractice.Service.Services
 {
     public class JwtService : IJwtService
     {
-        private readonly IUserRoleRepository UserRoleRepository;
         private readonly SiteSettings siteSettings;
+        private readonly SignInManager<User> signInManager;
 
-        public JwtService(IUserRoleRepository claimRepository, IOptionsSnapshot<SiteSettings> settings)
+        public JwtService(IOptionsSnapshot<SiteSettings> settings, SignInManager<User> signInManager)
         {
-            this.UserRoleRepository = claimRepository;
             this.siteSettings = settings.Value;
+            this.signInManager = signInManager;
         }
 
         public async Task<string> GenerateAsync(User user, CancellationToken cancellationToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var claims = GetClaimsAsync(user, cancellationToken);
+            var claims = GetClaimsAsync(user);
 
             var secretKey = Encoding.UTF8.GetBytes(siteSettings.jwtSettings.SecretKey);
 
@@ -56,23 +54,10 @@ namespace WebApi_BestPractice.Service.Services
             return jwt;
         }
 
-        private async Task<IEnumerable<Claim>> GetClaimsAsync(User user, CancellationToken cancellationToken)
+        private async Task<IEnumerable<Claim>> GetClaimsAsync(User user)
         {
-            var securityStampClaimType = new ClaimsIdentityOptions().SecurityStampClaimType;
-
-            var list = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.GivenName, user.FullName),
-                new Claim(securityStampClaimType, user.SecurityStamp.ToString())
-            };
-
-            var roles = await UserRoleRepository.GetRoleAsync(user, cancellationToken);
-            foreach (var role in roles)
-                list.Add(new Claim(ClaimTypes.Role, role.Name));
-
-            return list;
+            var result = await signInManager.ClaimsFactory.CreateAsync(user);
+            return result.Claims;
         }
     }
 }

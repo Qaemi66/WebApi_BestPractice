@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Collections.Generic;
 
-namespace WebApi_BestPractice.Domain.Etities
+namespace WebApi_BestPractice.Domain.Entities
 {
     public class Category : BaseClasses.BaseEntity
     {

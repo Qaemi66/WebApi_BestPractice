@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -16,7 +15,7 @@ using WebApi_BestPractice.Common.Exceptions;
 using WebApi_BestPractice.Common.Utilities;
 using WebApi_BestPractice.Data.Contracts;
 using WebApi_BestPractice.Data.Repositories;
-using WebApi_BestPractice.Service.Services;
+using WebApi_BestPractice.Domain.Entities;
 using WebApi_BestPractice.WebApi.Models;
 
 namespace WebApi_BestPractice.WebFramework.Extensions
@@ -37,7 +36,6 @@ namespace WebApi_BestPractice.WebFramework.Extensions
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         }
 
         public static void AddJwtAuthentication(this IServiceCollection services, JwtSettings jwtSettings)
@@ -87,6 +85,8 @@ namespace WebApi_BestPractice.WebFramework.Extensions
                     OnTokenValidated = async context =>
                     {
                         //var applicationSignInManager = context.HttpContext.RequestServices.GetRequiredService<IApplicationSignInManager>();
+                        var signInManager = context.HttpContext.RequestServices.GetRequiredService<SignInManager<User>>();
+                        var userManager = context.HttpContext.RequestServices.GetRequiredService<UserManager<User>>();
                         var userRepository = context.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
 
                         var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
@@ -98,15 +98,12 @@ namespace WebApi_BestPractice.WebFramework.Extensions
                             context.Fail("This token has no secuirty stamp");
 
                         //Find user and token from database and perform your custom validation
-                        var userId = claimsIdentity.GetUserId<int>();
-                        var user = await userRepository.GetByIdAsync(context.HttpContext.RequestAborted, userId);
+                        var userId = claimsIdentity.GetUserId();
+                        var user = await userManager.FindByIdAsync(userId);
 
-                        if (user.SecurityStamp != Guid.Parse(securityStamp))
+                        var validatedUser = await signInManager.ValidateSecurityStampAsync(context.Principal);
+                        if (validatedUser == null)
                             context.Fail("Token secuirty stamp is not valid.");
-
-                        //var validatedUser = await applicationSignInManager.ValidateSecurityStampAsync(context.Principal);
-                        //if (validatedUser == null)
-                        //    context.Fail("Token secuirty stamp is not valid.");
 
                         if (!user.IsActive)
                             context.Fail("User is not active.");
